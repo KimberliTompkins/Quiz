@@ -1,21 +1,24 @@
 var countdown = $("#countDown");
 var count = 60;
 var questionList = $("#questionList");
+var result = $("#result");
 var currentQuestion = 0;
+var correctCount = 0;
+var incorrectCount = 0;
 
 var quizQuestions = [
     {"question":"What is your name?",
      "choices":["Kim","Bob"],
-        "answer": ["Correct","incorrect"]}
+     "answer": ["+","-"]}
           
     ,
     {"question":"What is your age?",
      "choices":["21","42"],
-      "answer":["Correct","incorrect"]}
+     "answer":["+","-"]}
     
 ];
 
-// var choices1 = ["Kim","Bob"];
+
 
 //start the timer
 var timeLeft = 10;
@@ -36,22 +39,34 @@ $("#startButton").click(function(){
     
   });
 
-//   function dotheTest(){
-//       $("#questions").text(timeLeft)
-//       question1();
-    //   $.each(quizQuestions, function(key, value) {
-    //       writeQuestion(value);
-       
-    //   });
-//   };
+  $("#questionList ").on("click",".choiceSelected",function(){
+         
+         var answer = $(this).attr("data-answer");
+         result.empty();
+         // + indicates that the correct answer was selected
+         if(answer === "+"){
+            $("#result").append("<p>Correct!</p>");
+            correctCount++;
+         }
+         else{
+            $("#result").append("<p>Wrong</p>");
+            incorrectCount++
+            timeLeft-10;
+         }
+         currentQuestion++
+         writeQuestions(currentQuestion)
+    });
+
   function writeQuestions(questionNum){
+    questionList.empty();
     
     questionList.append("<p>"+quizQuestions[questionNum].question+"</P>");  
    
      for(var i=0;i<quizQuestions[questionNum].choices.length;i++){
+     
+     questionList.append('<button type="button" data-answer="'+quizQuestions[questionNum].answer[i]+'" class="list-group-item list-group-item-action choiceSelected">'+quizQuestions[questionNum].choices[i]+'</button>');
     
-       questionList.append('<button type="button" id="choiceSelected" class="list-group-item list-group-item-action">'+quizQuestions[questionNum].choices[i]+'</button>');
-      
+
      };
     
    
