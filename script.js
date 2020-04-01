@@ -1,5 +1,5 @@
 var countdown = $("#countDown");
-var count = 60;
+var timeInterval= "";
 var questionList = $("#questionList");
 var modalScreen = $(".modal-content");
 var result = $("#result");
@@ -41,10 +41,10 @@ var quizQuestions = [
 //start the timer
 var timeLeft = 30;
 
-$("#startButton").click(function () {
+ $("#startButton").click(function () {
   $("#startButton").hide();
   writeQuestions(currentQuestion);
-  var timeInterval = setInterval(function () {
+  timeInterval = setInterval(function () {
     countdown.text(timeLeft + " seconds remaining");
     timeLeft--;
     // when the timer reaches 0 pop up the score window
@@ -71,14 +71,16 @@ $("#questionList ").on("click", ".choiceSelected", function () {
   else {
     $("#result").append("<p>Wrong</p>");
     incorrectCount++
-    timeLeft - 10;
+    //subtract 10 seconds for wrong answer.
+    timeLeft = timeLeft - 5;
+    countdown.text(timeLeft);
     countdown.text(timeLeft + " seconds remaining");
 
   }
   currentQuestion++
-  // if we have displayed all questions then pop up the score window
+  // if we have displayed all questions then stop the timer and pop up the score window
   if (currentQuestion === quizQuestions.length) {
-    
+    clearInterval(timeInterval);
     countdown.text("");
     questionList.empty();
     modalPopup();
@@ -126,7 +128,7 @@ function modalPopup() {
   $(".modal-body").append('<p><input type="text" id="yourName"> Enter your to save score </p>')
   $("#saveChanges").show();
   $('#myModal').modal('show');
-  $("#startButton").show();
+  
 
 };
 //high score popup
@@ -136,7 +138,7 @@ function modalHighScore(player, max) {
   $(".modal-body").append("<p>" + player + " has the highest score of " + max + " correct answers!</p>")
   $("#saveChanges").hide();
   $('#myModal').modal('show');
-  $("#startButton").show();
+ 
 
 };
 //display the question
