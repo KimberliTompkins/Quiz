@@ -39,7 +39,7 @@ var quizQuestions = [
 
 
 //start the timer
-var timeLeft = 10;
+var timeLeft = 30;
 
 $("#startButton").click(function () {
   $("#startButton").hide();
@@ -47,7 +47,7 @@ $("#startButton").click(function () {
   var timeInterval = setInterval(function () {
     countdown.text(timeLeft + " seconds remaining");
     timeLeft--;
-
+    // when the timer reaches 0 pop up the score window
     if (timeLeft === 0) {
       countdown.text("");
       clearInterval(timeInterval);
@@ -58,7 +58,7 @@ $("#startButton").click(function () {
   }, 1000);
 
 });
-
+// is this the correct answer?
 $("#questionList ").on("click", ".choiceSelected", function () {
 
   var answer = $(this).attr("data-answer");
@@ -76,6 +76,7 @@ $("#questionList ").on("click", ".choiceSelected", function () {
 
   }
   currentQuestion++
+  // if we have displayed all questions then pop up the score window
   if (currentQuestion === quizQuestions.length) {
     
     countdown.text("");
@@ -88,14 +89,14 @@ $("#questionList ").on("click", ".choiceSelected", function () {
   }
 
 });
-
+// save score to local storage
 $("#saveChanges").click(function () {
 
   var playerName = $("#yourName").val()
   localStorage.setItem(playerName, correctCount);
   $('#myModal').modal('hide');
 });
-
+// get the high score
 $("#highScore").click(function () {
   max = null;
   player = ""
@@ -116,7 +117,7 @@ $("#highScore").click(function () {
   }
   modalHighScore(player, max)
 });
-
+// score popup
 function modalPopup() {
   result.empty();
   $(".modal-body").empty();
@@ -128,6 +129,7 @@ function modalPopup() {
   $("#startButton").show();
 
 };
+//high score popup
 function modalHighScore(player, max) {
   $(".modal-body").empty();
   $('.modal-title').text("High Score");
@@ -137,6 +139,7 @@ function modalHighScore(player, max) {
   $("#startButton").show();
 
 };
+//display the question
 function writeQuestions(questionNum) {
   questionList.empty();
 
