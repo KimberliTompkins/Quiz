@@ -7,21 +7,30 @@ var correctCount = 0;
 var incorrectCount = 0;
 
 var quizQuestions = [
-    {"question":"What is your name?",
-     "choices":["Kim","Bob"],
-     "answer": ["+","-"]}
-          
+    {"question":"If Button is clicked .......Event Handler is invoked",
+     "choices":["onSubmit()","onLoad()","isPostBack()","onClick()"],
+     "answer": ["-","-","-","+"]}    
     ,
-    {"question":"What is your age?",
-     "choices":["21","42"],
-     "answer":["+","-"]}
+    {"question":"Which built-in method calls a function for each element in the array?",
+     "choices":["while()","loop()","forEach()","None of the above"],
+     "answer":["-","-","+","-"]}
+     ,
+     {"question":"Which of the following function of Array object returns a string representing the array and its elements?",
+     "choices":["toSource()","sort()","splice()","toString()"],
+     "answer": ["-","-","-","+"]}     
+    ,
+    {"question":"Which Of The Dialog Box Display a Message And a Data Entry Field",
+     "choices":["Alert()","prompt()","confirm()"],
+     "answer": ["-","+","-"]}     
+    
+    
     
 ];
 
 
 
 //start the timer
-var timeLeft = 10;
+var timeLeft = 1000;
 $("#startButton").click(function(){
     $("#startButton").hide();
     writeQuestions(currentQuestion);
@@ -32,6 +41,7 @@ $("#startButton").click(function(){
       if (timeLeft === 0) {
         countdown.text("") ;
         clearInterval(timeInterval);
+        modalPopup();
       }
       
   
@@ -52,13 +62,34 @@ $("#startButton").click(function(){
             $("#result").append("<p>Wrong</p>");
             incorrectCount++
             timeLeft-10;
+            countdown.text(timeLeft + " seconds remaining");
+            
          }
          currentQuestion++
-         writeQuestions(currentQuestion)
-    });
+         if(currentQuestion === quizQuestions.length)
+         {
+          timeLeft=0
+          countdown.text("") ;
+          clearInterval(timeInterval);
+          questionList.empty()
+          modalPopup()
 
+         }
+         else{
+          writeQuestions(currentQuestion)
+         }
+         
+    });
+  function modalPopup(){
+     result.empty();
+    $('.modal-title').text("Your Score");
+    $(".modal-body").append("<p>correct: "+correctCount+"  incorrect: "+incorrectCount+"</p>")
+    $('#myModal').modal('show');
+
+  };
   function writeQuestions(questionNum){
     questionList.empty();
+    
     
     questionList.append("<p>"+quizQuestions[questionNum].question+"</P>");  
    
